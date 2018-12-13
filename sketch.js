@@ -4,7 +4,7 @@ let trunk, qt;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-	for (let i = 0; i < 500; i++) {
+	for (let i = 0; i < 50; i++) {
 		flock.push(new Boid());
 	}
 	alignSlider = createSlider(0, 2, 1, 0.1);
@@ -32,6 +32,9 @@ function draw() {
 		flock[i].update();
 		flock[i].edges();
 		flock[i].display();
+		noFill();
+		stroke(255, 0, 0);
+		ellipse(flock[i].vision.x, flock[i].vision.y, flock[i].vision.r);
 	}
 	//noLoop();
 }
