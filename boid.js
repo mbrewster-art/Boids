@@ -9,7 +9,7 @@ class Boid {
         this.maxSpeed = 4;
         this.r = 1;
         this.neighbours;
-        this.vision = new Circle(this.position.x, this.position.y, 100);
+        this.vision;
     }
 
     getNeighbours() {
@@ -18,7 +18,7 @@ class Boid {
         //console.log(this.neighbours);
     }
 
-    align(pop) {
+    align() {
         let total = 0;
         let steering = createVector();
         for (let agent of this.neighbours) {
@@ -84,9 +84,10 @@ class Boid {
     }
 
     forces(pop) {
+        this.vision = new Circle(this.position.x, this.position.y, 100);
         this.getNeighbours();
         this.acceleration.mult(0);
-        let alignment = this.align(pop);
+        let alignment = this.align();
         alignment.mult(alignSlider.value());
         let cohese = this.cohese(pop)
         cohese.mult(coheseSlider.value());
