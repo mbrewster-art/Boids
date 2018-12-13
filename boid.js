@@ -94,8 +94,8 @@ class Boid {
         let seperate = this.seperate(pop);
         seperate.mult(seperateSlider.value());
         this.acceleration.add(alignment);
-        //this.acceleration.add(cohese);
-        //this.acceleration.add(seperate);
+        this.acceleration.add(cohese);
+        this.acceleration.add(seperate);
     }
 
     edges() {
