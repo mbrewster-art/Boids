@@ -20,7 +20,7 @@ function setup() {
 	createP('Cohese').position(10, 70);
 	createP('Seperate').position(10, 120);
 	trunk = new Rectangle(width / 2, height / 2, width / 2, height / 2);
-	qt = new QuadTree(trunk, 4);
+	qt = new QuadTree(trunk, 10);
 }
 
 function draw() {
@@ -33,7 +33,8 @@ function draw() {
 		flock[i].edges();
 		flock[i].display();
 		noFill();
-		stroke(255, 0, 0);
+		stroke(255, 0, 0, 100);
+		stroke
 		ellipse(flock[i].vision.x, flock[i].vision.y, flock[i].vision.r);
 	}
 	//noLoop();
