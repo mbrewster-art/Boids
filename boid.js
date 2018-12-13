@@ -7,17 +7,24 @@ class Boid {
         this.velocity.setMag(random(2, 4));
         this.maxForce = 0.2;
         this.maxSpeed = 4;
-        this.r = 4;
+        this.r = 1;
+        this.neighbours;
+        this.vision = new Circle(this.position.x, this.position.y, 100);
+    }
+
+    getNeighbours() {
+        this.neighbours = [];
+        this.neighbours = qt.query(this.vision, this.neighbours);
+        //console.log(this.neighbours);
     }
 
     align(pop) {
         let total = 0;
-        let vision = 50;
         let steering = createVector();
-        for (let agent of pop) {
+        for (let agent of this.neighbours) {
             let proximity = distSqrd(this.position.x, this.position.y, agent.position.x, agent.position.y);
-            if (agent != this && proximity < vision * vision) {
-                steering.add(agent.velocity)
+            if (agent != this) {
+                steering.add(agent.velocity);
                 total++;
             }
         }
@@ -33,11 +40,10 @@ class Boid {
 
     cohese(pop) {
         let total = 0;
-        let vision = 100;
         let steering = createVector(0, 0);
-        for (let agent of pop) {
+        for (let agent of this.neighbours) {
             let proximity = distSqrd(this.position.x, this.position.y, agent.position.x, agent.position.y);
-            if (agent != this && proximity < vision * vision) {
+            if (agent != this) {
                 steering.add(agent.position)
                 total++;
             }
@@ -59,7 +65,7 @@ class Boid {
         let total = 0;
         let vision = 50;
         let steering = createVector(0, 0);
-        for (let agent of pop) {
+        for (let agent of this.neighbours) {
             let proximity = distSqrd(this.position.x, this.position.y, agent.position.x, agent.position.y);
             if (agent != this && proximity < vision * vision) {
                 let diff = p5.Vector.sub(this.position, agent.position);
@@ -78,6 +84,7 @@ class Boid {
     }
 
     forces(pop) {
+        this.getNeighbours();
         this.acceleration.mult(0);
         let alignment = this.align(pop);
         alignment.mult(alignSlider.value());
@@ -86,8 +93,8 @@ class Boid {
         let seperate = this.seperate(pop);
         seperate.mult(seperateSlider.value());
         this.acceleration.add(alignment);
-        this.acceleration.add(cohese);
-        this.acceleration.add(seperate);
+        //this.acceleration.add(cohese);
+        //this.acceleration.add(seperate);
     }
 
     edges() {
@@ -124,4 +131,10 @@ class Boid {
         pop();
     }
 
+}
+
+function distSqrd(x1, y1, x2, y2) {
+    var dx = x2 - x1;
+    var dy = y2 - y1;
+    return dx * dx + dy * dy;
 }

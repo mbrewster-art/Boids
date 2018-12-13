@@ -1,9 +1,10 @@
 let flock = [];
 let alignSlider, coheseSlider, seperateSlider;
+let trunk, qt;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
-	for (let i = 0; i < 200; i++) {
+	for (let i = 0; i < 500; i++) {
 		flock.push(new Boid());
 	}
 	alignSlider = createSlider(0, 2, 1, 0.1);
@@ -18,21 +19,19 @@ function setup() {
 	createP('Alignment').position(10, 10);
 	createP('Cohese').position(10, 70);
 	createP('Seperate').position(10, 120);
+	trunk = new Rectangle(width / 2, height / 2, width / 2, height / 2);
+	qt = new QuadTree(trunk, 4);
 }
 
 function draw() {
 	background(51);
-	let neighbours = flock;
-	for (let i = 0; i < neighbours.length; i++) {
-		flock[i].forces(neighbours);
+	let flockSnap = flock;
+	for (let i = 0; i < flock.length; i++) {
+		qt.insert(flock[i]);
+		flock[i].forces(flockSnap);
 		flock[i].update();
 		flock[i].edges();
 		flock[i].display();
 	}
-}
-
-function distSqrd(x1, y1, x2, y2) {
-	var dx = x2 - x1;
-	var dy = y2 - y1;
-	return dx * dx + dy * dy;
+	//noLoop();
 }
